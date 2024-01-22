@@ -59,13 +59,15 @@ func (c *DNSPodDNSProvider) DeleteRecord(zoneID string, recordID string) error {
 func (c *DNSPodDNSProvider) ListRecords(zoneID string) (records []types.Record, err error) {
 	arr, _, err := c.client.Records.List(zoneID, "")
 	for _, record := range arr {
+		ttl, _ := strconv.Atoi(record.TTL)
 		records = append(records, types.Record{
-			ID:      record.ID,
-			Name:    record.Name,
-			Type:    record.Type,
-			Value:   record.Value,
-			Comment: record.Remark,
-			// TTL:     record.TTL,
+			ID:       record.ID,
+			Name:     record.Name,
+			Type:     record.Type,
+			Value:    record.Value,
+			Comment:  record.Remark,
+			UpdateAt: record.UpdateOn,
+			TTL:      ttl,
 		})
 	}
 	return
@@ -76,8 +78,9 @@ func (c *DNSPodDNSProvider) ListZones() (zones []types.Zone, err error) {
 	domains, _, _ := c.client.Domains.List()
 	for _, domain := range domains {
 		zones = append(zones, types.Zone{
-			ID:   domain.ID.String(),
-			Name: domain.Name,
+			ID:        domain.ID.String(),
+			Name:      domain.Name,
+			CreatedAt: domain.CreatedOn,
 		})
 	}
 	return

@@ -28,10 +28,11 @@ func NewDNSProvider(config types.Config) (provider *CloudflareDNSProvider, err e
 func (c *CloudflareDNSProvider) ListZones() (zones []types.Zone, err error) {
 	ctx := context.Background()
 	arr, err := c.client.ListZones(ctx)
-	for _, z := range arr {
+	for _, zone := range arr {
 		zones = append(zones, types.Zone{
-			ID:   z.ID,
-			Name: z.Name,
+			ID:        zone.ID,
+			Name:      zone.Name,
+			CreatedAt: zone.CreatedOn.Format("2006-01-02 15:04:05"),
 		})
 	}
 	return
@@ -44,10 +45,12 @@ func (c *CloudflareDNSProvider) ListRecords(zoneID string) (records []types.Reco
 	arr, _, err := c.client.ListDNSRecords(ctx, zone, cloudflare.ListDNSRecordsParams{})
 	for _, record := range arr {
 		records = append(records, types.Record{
-			ID:    record.ID,
-			Name:  record.Name,
-			Type:  record.Type,
-			Value: record.Content,
+			ID:       record.ID,
+			Name:     record.Name,
+			Type:     record.Type,
+			Value:    record.Content,
+			TTL:      record.TTL,
+			UpdateAt: record.ModifiedOn.Format("2006-01-02 15:04:05"),
 		})
 	}
 	return

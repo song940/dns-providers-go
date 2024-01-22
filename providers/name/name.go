@@ -68,8 +68,9 @@ func (c *DNSProvider) ListZones() (zones []types.Zone, err error) {
 	}
 	for _, domain := range domains.Domains {
 		zones = append(zones, types.Zone{
-			ID:   domain.DomainName,
-			Name: domain.DomainName,
+			ID:        domain.DomainName,
+			Name:      domain.DomainName,
+			CreatedAt: domain.CreateDate,
 		})
 	}
 	return

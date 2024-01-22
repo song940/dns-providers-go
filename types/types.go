@@ -1,17 +1,19 @@
 package types
 
 type Zone struct {
-	ID   string
-	Name string
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	CreatedAt string `json:"createdAt"`
 }
 
 type Record struct {
-	ID      string
-	Type    string
-	Name    string
-	Value   string
-	TTL     int
-	Comment string
+	ID       string `json:"id"`
+	Type     string `json:"type"`
+	Name     string `json:"name"`
+	Value    string `json:"value"`
+	TTL      int    `json:"ttl"`
+	Comment  string `json:"comment"`
+	UpdateAt string `json:"updateAt"`
 }
 
 type IDNSProvider interface {
